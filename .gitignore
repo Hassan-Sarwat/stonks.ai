@@ -1,1 +1,4 @@
 data_raw/
+__pycache__
+.python_version
+.venv
