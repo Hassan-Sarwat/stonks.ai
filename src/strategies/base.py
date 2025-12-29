@@ -9,42 +9,35 @@ class IStrategy(ABC):
     """
 
     def __init__(self):
-        self.data: Optional[pd.DataFrame] = None
-        self.position: int = 0  # Current position size
-        self.cash: float = 10000.0  # Starting cash, can be overridden
+        self.data: Dict[str, pd.DataFrame] = {}
+        # Positions: symbol -> quantity (positive for long, negative for short)
+        self.positions: Dict[str, float] = {} 
+        self.cash: float = 10000.0  # Starting cash, will be overridden by Backtester
         self.portfolio_value: float = self.cash
 
     @abstractmethod
-    def initialize(self, data: pd.DataFrame) -> None:
+    def initialize(self, data: Dict[str, pd.DataFrame]) -> None:
         """
-        Initialize the strategy with historical data.
+        Initialize the strategy with historical data for all coins.
         Used for pre-calculating indicators or setting up caches.
         
         Args:
-            data (pd.DataFrame): The full dataset for the backtest.
+            data (Dict[str, pd.DataFrame]): Dictionary mapping symbol to its historical dataframe.
         """
         pass
 
     @abstractmethod
-    def on_tick(self, row: pd.Series) -> Optional[Dict[str, Any]]:
+    def on_tick(self, timestamp: pd.Timestamp, prices: Dict[str, float], rows: Dict[str, pd.Series]) -> Optional[Dict[str, Dict[str, Any]]]:
         """
-        Process a single market step (event-driven simulation).
+        Process a single market step (event-driven simulation) for all coins simultaneously.
         
         Args:
-            row (pd.Series): The current row of data (candle/tick).
+            timestamp (pd.Timestamp): Current simulation time.
+            prices (Dict[str, float]): Current price for each symbol.
+            rows (Dict[str, pd.Series]): Current row data for each symbol.
             
         Returns:
-            Optional[Dict[str, Any]]: A signal dictionary (e.g., {'action': 'BUY', 'quantity': 1.0}) or None.
-        """
-        pass
-
-    @abstractmethod
-    def generate_signals(self) -> pd.DataFrame:
-        """
-        Vectorized signal generation.
-        Should calculate signals for the entire dataset at once if possible.
-        
-        Returns:
-            pd.DataFrame: The original dataframe with an added 'signal' column.
+            Optional[Dict[str, Dict[str, Any]]]: A dictionary of signals keyed by symbol.
+            Example: {'BTC': {'action': 'BUY', 'quantity': 0.1}, 'ETH': {'action': 'SELL', ...}}
         """
         pass
