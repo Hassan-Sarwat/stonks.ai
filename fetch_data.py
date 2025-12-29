@@ -8,7 +8,7 @@ import time
 import os
 
 # Configuration
-SYMBOL = "BTCUSDT"
+SYMBOL = "XRPUSDT"  #ETHUSDT, SOLUSDT, TRXUSDT, BNBUSDT
 INTERVALS = ["1m", "15m", "1h", "1d"]
 END_TIME = 1766936750534  # Your timestamp
 START_TIME = END_TIME - (365 * 24 * 60 * 60 * 1000)  # 1 year back
@@ -39,7 +39,7 @@ def get_last_timestamp(symbol, interval):
 def fetch_klines(symbol, interval, start_time, end_time):
     """Fetch klines from Binance API with proper rate limit handling"""
     all_data = []
-    save_threshold = 5000  # Save every 5000 lines
+    save_threshold = 20000  # Save every 5000 lines
 
     # Check if we should resume from existing data
     last_timestamp = get_last_timestamp(symbol, interval)
