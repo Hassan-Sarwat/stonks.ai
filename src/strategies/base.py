@@ -27,17 +27,21 @@ class IStrategy(ABC):
         pass
 
     @abstractmethod
+    def generate_signals(self) -> Dict[str, pd.DataFrame]:
+        """
+        Vectorized signal generation.
+        Should calculate signals for the entire dataset at once.
+        
+        Returns:
+            Dict[str, pd.DataFrame]: A dictionary where keys are symbols and values are DataFrames
+                                     containing at least a 'signal' column (1=Buy, -1=Sell, 0=Hold).
+        """
+        pass
+
+    @abstractmethod
     def on_tick(self, timestamp: pd.Timestamp, prices: Dict[str, float], rows: Dict[str, pd.Series]) -> Optional[Dict[str, Dict[str, Any]]]:
         """
-        Process a single market step (event-driven simulation) for all coins simultaneously.
-        
-        Args:
-            timestamp (pd.Timestamp): Current simulation time.
-            prices (Dict[str, float]): Current price for each symbol.
-            rows (Dict[str, pd.Series]): Current row data for each symbol.
-            
-        Returns:
-            Optional[Dict[str, Dict[str, Any]]]: A dictionary of signals keyed by symbol.
-            Example: {'BTC': {'action': 'BUY', 'quantity': 0.1}, 'ETH': {'action': 'SELL', ...}}
+        Process a single market step (event-driven simulation).
+        Deprecated for high-performance backtesting but kept for live trading compatibility.
         """
         pass

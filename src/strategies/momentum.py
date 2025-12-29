@@ -93,6 +93,23 @@ class MomentumStrategy(IStrategy):
         
         return signals if signals else None
 
-    def generate_signals(self) -> pd.DataFrame:
-        # Not implemented for multi-coin vectorization yet
-        pass
+    def generate_signals(self) -> Dict[str, pd.DataFrame]:
+        """
+        Vectorized signal generation using OFI.
+        """
+        signals = {}
+        for symbol, df in self.data.items():
+            df = df.copy()
+            
+            # Calculate metrics
+            taker_sell_base = df['volume'] - df['taker_buy_base']
+            df['ofi'] = df['taker_buy_base'] - taker_sell_base
+            
+            # Generate Signals
+            df['signal'] = 0
+            df.loc[df['ofi'] > self.imbalance_threshold, 'signal'] = 1
+            df.loc[df['ofi'] < -self.imbalance_threshold, 'signal'] = -1
+            
+            signals[symbol] = df[['signal']]
+        
+        return signals

@@ -71,5 +71,27 @@ class MeanReversionStrategy(IStrategy):
                 
         return signals if signals else None
 
-    def generate_signals(self) -> pd.DataFrame:
-        pass
+    def generate_signals(self) -> Dict[str, pd.DataFrame]:
+        """
+        Vectorized signal generation using Bollinger Bands.
+        """
+        signals = {}
+        
+        # We need to make sure indicators are calculated
+        if not self.indicators:
+            self.initialize(self.data)
+            
+        for symbol, df in self.indicators.items():
+            # df already has upper_band and lower_band from initialize()
+            df = df.copy()
+            df['signal'] = 0
+            
+            # Buy when price < lower band
+            df.loc[df['close'] < df['lower_band'], 'signal'] = 1
+            
+            # Sell when price > upper band
+            df.loc[df['close'] > df['upper_band'], 'signal'] = -1
+            
+            signals[symbol] = df[['signal']]
+            
+        return signals
