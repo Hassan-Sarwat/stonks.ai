@@ -12,7 +12,7 @@ SYMBOL = "XRPUSDT"  #ETHUSDT, SOLUSDT, TRXUSDT, BNBUSDT
 INTERVALS = ["1m", "15m", "1h", "1d"]
 END_TIME = 1766936750534  # Your timestamp
 START_TIME = END_TIME - (365 * 24 * 60 * 60 * 1000)  # 1 year back
-OUTPUT_DIR = "data"
+OUTPUT_DIR = "data_raw"
 
 # Rate limiting - Binance allows 6000 weight per minute, klines endpoint weight is 2
 REQUEST_DELAY = 0.5  # Conservative delay between requests
@@ -21,7 +21,7 @@ MAX_RETRIES = 5
 
 def get_last_timestamp(symbol, interval):
     """Get the last timestamp from existing CSV file if it exists"""
-    filename = f"{OUTPUT_DIR}/{symbol}_{interval}.csv"
+    filename = f"{OUTPUT_DIR}/{symbol}/{symbol}_{interval}.csv"
     if os.path.exists(filename):
         try:
             df = pd.read_csv(filename)
