@@ -1,8 +1,16 @@
 {
-    "coins": ["XRP", "SOL", "ETH", "BNB", "TRX"],
+    "coins": [
+        "XRP",
+        "SOL",
+        "ETH",
+        "BNB",
+        "TRX"
+    ],
     "interval": "1m",
     "start_date": null,
     "end_date": null,
     "initial_capital": 10000.0,
-    "strategies": ["momentum", "mean_reversion"]
+    "strategies": [
+        "xgboost"
+    ]
 }
