@@ -6,7 +6,7 @@ A high-performance, vectorized algorithmic trading backtester using the **Strate
 
 ### Prerequisites
 - **uv** (Python package manager)
-- Python 3.10+
+- Python 3.12+
 
 ### Installation
 Clone the repository and install dependencies:
@@ -63,7 +63,7 @@ The bot is configured via `config.json`. You can control the active strategies, 
         def on_tick(self, timestamp, prices, rows):
             pass
     ```
-4.  **Register your strategy** in `main.py` and run it.
+4.  **Register your strategy** in `config.json` and run `uv run main.py`.
 
 ## 🏗️ Architecture
 - **`src/backtesting/engine.py`**: A Numpy-optimized execution engine that runs simulations across multiple assets simultaneously.

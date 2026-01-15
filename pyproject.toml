@@ -15,4 +15,5 @@ dependencies = [
     "seaborn>=0.13.2",
     "jupyter>=1.0.0",
     "ipykernel>=6.29.0",
+    "dexpaprika-sdk>=0.3.0",
 ]
