@@ -1,10 +1,6 @@
 {
     "coins": [
-        "XRP",
-        "SOL",
-        "ETH",
-        "BNB",
-        "TRX"
+        "SUI"
     ],
     "interval": "1m",
     "start_date": null,
@@ -12,5 +8,22 @@
     "initial_capital": 10000.0,
     "strategies": [
         "xgboost"
-    ]
+    ],
+    "live_trading": {
+        "enabled": true,
+        "network": "testnet",
+        "private_key": "YOUR_PRIVATE_KEY_HERE",
+        "dry_run": true
+    },
+    "risk_management": {
+        "max_position_size": 0.1,
+        "max_daily_drawdown": 0.05,
+        "stop_loss_pct": 0.03,
+        "take_profit_pct": 0.05
+    },
+    "notifications": {
+        "telegram_bot_token": "",
+        "telegram_chat_id": "",
+        "email": ""
+    }
 }
